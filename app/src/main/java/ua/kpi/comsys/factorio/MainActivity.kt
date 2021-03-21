@@ -2,58 +2,70 @@ package ua.kpi.comsys.factorio
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import com.google.android.material.textfield.TextInputEditText
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import ua.kpi.comsys.ip8311.Fermat
+import ua.kpi.comsys.ip8311.Genetic
+import ua.kpi.comsys.ip8311.Perceptron
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val input = findViewById<TextInputEditText>(R.id.inputField)
-        val output = findViewById<TextView>(R.id.outputText)
-        val calcBut = findViewById<Button>(R.id.calcBut)
+        val vp2 : ViewPager2 = findViewById(R.id.viewpager)
 
-        calcBut.setOnClickListener { v ->
-            val original = input.text.toString().toInt()
-            val factorsArray = factorize(original)
+        // Init margin parameters
+        val booksPageMargins = vp2.layoutParams as ViewGroup.MarginLayoutParams
+        booksPageMargins.setMargins(0, 0, 30, 0)
+        val defaultMarignParams = vp2.layoutParams as ViewGroup.MarginLayoutParams
+        defaultMarignParams.setMargins(0, 0, 0, 0)
 
-            if (factorsArray == null) {
-                Toast.makeText(applicationContext,"wrong number",Toast.LENGTH_SHORT).show()
-            } else {
-                output.text = factorsArray.joinToString()
+        vp2.adapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount(): Int = 3;
+            override fun createFragment(position: Int): Fragment {
+                if (position == 0) {
+                    vp2.layoutParams = defaultMarignParams
+                    return Fermat()
+                } else if (position == 1) {
+                    vp2.layoutParams = defaultMarignParams
+                    return Perceptron()
+                } else if (position == 2) {
+                    vp2.layoutParams = defaultMarignParams
+                    return Genetic()
+                } else {
+                    return error("bad argument")
+                }
             }
-        }
+
+            var tabLayout : TabLayout = findViewById(R.id.tabLayout)
+            TabLayoutMediator(tabLayout, vp2) { tab, _ ->
+                vp2.setCurrentItem(tab.position, true)
+            }.attach()
+
+            tabLayout.getTabAt(0)?.apply{
+                customView?.setOnClickListener(){
+                    vp2.setCurrentItem(0)
+                }
+            }?.setIcon(R.drawable.fermat)?.setText("GENERAL")
+
+            tabLayout.getTabAt(1)?.apply {
+                customView?.setOnClickListener(){
+                    vp2.setCurrentItem(1)
+                }
+            }?.setIcon(R.drawable.perceptron)?.setText("GRAPHS")
+
+            tabLayout.getTabAt(2)?.apply {
+                customView?.setOnClickListener(){
+                    vp2.setCurrentItem(2)
+                }
+            }?.setIcon(R.drawable.genes)?.setText("BOOKS")
 
     }
 }
 
-fun factorize(original: Int): MutableList<Int>? {
-
-    // Return if the input number is up to 3
-    if (original == 0 || original == 1 || original == 2 || original == 3) return mutableListOf(original)
-    if (original < 0) return null
-
-    // Initiate the prime factors array
-    val factors = mutableListOf<Int>()
-    var changer: Int = original
-
-    // Iterate through to half of the original number and find all prime factors
-    var i: Int = 2
-    while (i <= original / 2) {
-
-        if (changer % i == 0) {
-            factors.add(i)
-            changer /= i
-            if (changer == 1) return factors
-            continue
-        } else {
-            i++
-        }
-    }
-
-    // If found factors - return them. Otherwise - original is a prime number
-    return if (factors.isEmpty()) mutableListOf(original) else factors
-}
