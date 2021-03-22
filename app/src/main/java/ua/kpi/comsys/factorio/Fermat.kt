@@ -1,5 +1,4 @@
-package ua.kpi.comsys.ip8311
-
+package ua.kpi.comsys.factorio
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.textfield.TextInputEditText
-import ua.kpi.comsys.factorio.R
 import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.math.ceil

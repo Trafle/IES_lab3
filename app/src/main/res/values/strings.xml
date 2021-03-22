@@ -3,4 +3,6 @@
     <string name="type_a_number_to_factorize">Type a number to factorize</string>
     <string name="calculate">calculate</string>
     <string name="no_results_yet">No results yet</string>
+    <string name="speed">speed</string>
+    <string name="deadline">deadline</string>
 </resources>

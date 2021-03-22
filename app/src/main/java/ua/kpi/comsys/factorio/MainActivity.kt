@@ -8,9 +8,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import ua.kpi.comsys.ip8311.Fermat
-import ua.kpi.comsys.ip8311.Genetic
-import ua.kpi.comsys.ip8311.Perceptron
 
 
 class MainActivity : AppCompatActivity() {
@@ -42,30 +39,32 @@ class MainActivity : AppCompatActivity() {
                     return error("bad argument")
                 }
             }
+        }
+        val tabLayout : TabLayout = findViewById(R.id.tabLayout)
 
-            var tabLayout : TabLayout = findViewById(R.id.tabLayout)
-            TabLayoutMediator(tabLayout, vp2) { tab, _ ->
-                vp2.setCurrentItem(tab.position, true)
-            }.attach()
+        TabLayoutMediator(tabLayout, vp2) { tab, _ ->
+            vp2.setCurrentItem(tab.position, true)
+        }.attach()
 
-            tabLayout.getTabAt(0)?.apply{
-                customView?.setOnClickListener(){
-                    vp2.setCurrentItem(0)
-                }
-            }?.setIcon(R.drawable.fermat)?.setText("GENERAL")
+        tabLayout.getTabAt(0)?.apply{
+            customView?.setOnClickListener(){
+                vp2.setCurrentItem(0)
+            }
+        }?.setIcon(R.drawable.fermat)?.setText("Fermat")
 
-            tabLayout.getTabAt(1)?.apply {
-                customView?.setOnClickListener(){
-                    vp2.setCurrentItem(1)
-                }
-            }?.setIcon(R.drawable.perceptron)?.setText("GRAPHS")
+        tabLayout.getTabAt(1)?.apply {
+            customView?.setOnClickListener(){
+                vp2.setCurrentItem(1)
+            }
+        }?.setIcon(R.drawable.perceptron)?.setText("Perceptron")
 
-            tabLayout.getTabAt(2)?.apply {
-                customView?.setOnClickListener(){
-                    vp2.setCurrentItem(2)
-                }
-            }?.setIcon(R.drawable.genes)?.setText("BOOKS")
+        tabLayout.getTabAt(2)?.apply {
+            customView?.setOnClickListener(){
+                vp2.setCurrentItem(2)
+            }
+        }?.setIcon(R.drawable.genes)?.setText("Genes")
 
     }
+
 }
 

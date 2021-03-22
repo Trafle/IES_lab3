@@ -1,11 +1,10 @@
-package ua.kpi.comsys.ip8311
+package ua.kpi.comsys.factorio
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ua.kpi.comsys.factorio.R
 
 class Genetic : Fragment () {
     override fun onCreateView(
@@ -13,6 +12,6 @@ class Genetic : Fragment () {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.perceptron_layout, container, false)
+        return inflater.inflate(R.layout.genetic_layout, container, false)
     }
 }
