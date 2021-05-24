@@ -27,49 +27,76 @@ class Perceptron : Fragment () {
         val speeds = listOf(0.001, 0.01, 0.05, 0.1, 0.2, 0.3)
         val deadlines = listOf(0.5, 1.0, 2.0, 5.0)
         val iterations = listOf(100, 200, 500, 1000)
+        val illegalValues = listOf(
+            Double.NaN,
+            Double.NEGATIVE_INFINITY,
+            Double.POSITIVE_INFINITY
+        )
 
         val speedSpinner: Spinner = view.findViewById(R.id.speed)
         val deadlineSpinner: Spinner = view.findViewById(R.id.deadline)
+        val iterationsSpinner: Spinner = view.findViewById(R.id.iterations)
+        val textOutput: TextView = view.findViewById(R.id.output)
+
         val speedArray = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, speeds).also { speedArray ->
             speedArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             speedSpinner.adapter = speedArray
         }
         val deadlineArray = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, deadlines).also { deadlineArray ->
-            speedArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            deadlineArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             deadlineSpinner.adapter = deadlineArray
+        }
+        val iterationsArray = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, iterations).also { iterationsArray ->
+            iterationsArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            iterationsSpinner.adapter = iterationsArray
         }
 
         view.findViewById<Button>(R.id.calc).setOnClickListener { _ ->
             val speed = speedSpinner.selectedItem.toString().toDouble()
             val deadline = deadlineSpinner.selectedItem.toString().toDouble()
-            val accuracy = percept(threshold, points, speed, deadline, iterations)
-            print(accuracy)
+            val iterations = iterationsSpinner.selectedItem.toString().toInt()
+            val accuracy = percept(speed, deadline, iterations)
+
+
+            if (accuracy.first in illegalValues || accuracy.second in illegalValues) {
+                textOutput.text = "No solution found"
+            }else{
+                textOutput.text = accuracy.toString()
+            }
         }
     }
 }
 
-fun percept (threshold: Int, points: List<Point>, speed: Double, deadline: Double, iterations: List<Int>): Double {
+fun percept (speed: Double, deadline: Double, iterations: Int): Pair<Double, Double> {
 
-    var speedIndex: Int = 0
-    var accuracy: Double = 0.0
+    var W1 = 0.00
+    var W2 = 0.00
+    var P = 4.00
+    var points = arrayListOf(Pair(0.00, 6.00), Pair(1.00, 5.00), Pair(3.00, 3.00), Pair(2.00, 4.00))
 
-    val timeInMillis = measureTimeMillis {
-
+    fun validate(): Boolean {
+        val y1 = W1 * points[0].first + W2 * points[0].second
+        val y2 = W1 * points[1].first + W2 * points[1].second
+        val y3 = W1 * points[2].first + W2 * points[2].second
+        val y4 = W1 * points[3].first + W2 * points[3].second
+        if ((y1 > P) && (y2 > P) && (y3 < P) && (y4 < P)) {
+            return true
+        }
+        return false
     }
-
-//    var deadlineIndex = pickTheSmallestLessThanNum(timeInMillis.toDouble() / 1000, deadlines)
-
-
-
-    return deadline + speed
+    val time_in = System.currentTimeMillis()
+    for (i in 0..iterations) {
+        if ((System.currentTimeMillis() - time_in) <= deadline * 1000) {
+            for (k in 0 until points.size) {
+                val y = W1 * points[k].first + W2 * points[k].second
+                val delta = P - y
+                W1 += delta * points[k].first * speed
+                W2 += delta * points[k].second * speed
+                if (validate()) {
+                    return Pair(W1, W2)
+                }
+            }
+        }
+    }
+    return Pair(W1, W2)
 }
-
-//fun pickTheSmallestLessThanNum(number: Double, array: List<Double>): Int? {
-//    var index: Int = 0
-//
-//    for ((i, element) in array.withIndex()) {
-//        if (element > number && element <= array[index]) index = i
-//    }
-//
-//    return if (array[index] < number) null else index
-//}
