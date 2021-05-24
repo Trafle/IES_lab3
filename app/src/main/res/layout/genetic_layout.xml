@@ -1,11 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/x1"
+        android:layout_width="55dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="1"
+
+        app:layout_constraintEnd_toStartOf="@+id/x2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/x2"
+        android:layout_width="55dp"
+        android:layout_height="43dp"
+        android:layout_marginEnd="4dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="3"
+
+        app:layout_constraintEnd_toStartOf="@+id/x3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/x3"
+        android:layout_width="55dp"
+        android:layout_height="43dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="6"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/x4"
+        android:layout_width="55dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="4dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="2"
+
+        app:layout_constraintStart_toEndOf="@+id/x3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/y"
+        android:layout_width="55dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="50"
+
+        android:textFontWeight="10"
+        app:layout_constraintStart_toEndOf="@+id/x4"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
+        android:id="@+id/message"
+        android:layout_width="239dp"
+        android:gravity="center"
+        android:text="result"
+        android:textSize="20dp"
+        android:layout_height="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/calc"/>
+
+    <Button
+        android:id="@+id/calc"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="empty yet"/>
+        android:layout_height="60dp"
+        android:layout_marginBottom="60dp"
+        android:text="Calculate"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
