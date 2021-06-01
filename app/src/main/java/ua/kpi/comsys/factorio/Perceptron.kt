@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import kotlin.concurrent.timer
 import kotlin.system.measureTimeMillis
 
 data class Point(val x: Double, val y: Double)
@@ -49,6 +50,29 @@ class Perceptron : Fragment () {
         val iterationsArray = ArrayAdapter(context, R.layout.support_simple_spinner_dropdown_item, iterations).also { iterationsArray ->
             iterationsArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             iterationsSpinner.adapter = iterationsArray
+        }
+
+        val time: Int = 3000
+        view.findViewById<Button>(R.id.cycle).setOnClickListener {
+            var counter: Int = 0
+            val time_in = System.currentTimeMillis()
+
+            while (true) {
+
+                val accuracy = percept(speeds.random(), deadlines.random(), iterations.random())
+
+                if (!(accuracy.first in illegalValues || accuracy.second in illegalValues)) {
+                    counter++
+                }
+
+                // Break after 3 seconds
+                if ((System.currentTimeMillis() - time_in) > time) {
+                    break
+                }
+            }
+            textOutput.text = counter.toString()
+
+
         }
 
         view.findViewById<Button>(R.id.calc).setOnClickListener { _ ->

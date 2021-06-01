@@ -32,7 +32,7 @@ class Genetic : Fragment () {
 
             val generation = geneMachine(x1, x2, x3, x4, y).result()
 
-            if(generation.isEmpty()) {
+            if (generation == null) {
                 message?.text = "No result"
             } else {
                 message?.text = generation.toString()
@@ -141,37 +141,45 @@ constructor(in_x1: Double, in_x2: Double, in_x3: Double, in_x4: Double, in_y: Do
         return false
     }
 
-    fun lifeCycle() {
+    fun lifeCycle(): Boolean {
         var q = 0
-        while (!calculateBestFitness() && q < 10) {
-            this.calculateFitnesOfPopulation()
-            this.playRulet()
-            this.crossOver()
-            q++
-        }
-    }
-
-    fun result(): MutableList<Double> {
-        this.zeroPopulationInit()
-        this.lifeCycle()
-        while ((!this.fitness_list.contains(0.0)) &&
-            population[0] == child_popul[0] &&
-            population[1] == child_popul[1] &&
-            population[2] == child_popul[2] &&
-            population[3] == child_popul[3]
-        ) {
-            zero_population.clear()
-            population.clear()
-            fitness_list.clear()
-            child_popul.clear()
-            this.zeroPopulationInit()
-            this.lifeCycle()
-        }
-        for (i in 0..3) {
-            if (fitness_list[i] == 0.0) {
-                best_popul = population[i]
+        while (!calculateBestFitness()) {
+            // the limit of cycles
+            if (q < 100) {
+                this.calculateFitnesOfPopulation()
+                this.playRulet()
+                this.crossOver()
+                q++
+            } else {
+                return false
             }
         }
-        return best_popul
+        return true
+    }
+
+    fun result(): MutableList<Double>? {
+        this.zeroPopulationInit()
+        if (this.lifeCycle()) {
+            while ((!this.fitness_list.contains(0.0)) &&
+                    population[0] == child_popul[0] &&
+                    population[1] == child_popul[1] &&
+                    population[2] == child_popul[2] &&
+                    population[3] == child_popul[3]
+            ) {
+                zero_population.clear()
+                population.clear()
+                fitness_list.clear()
+                child_popul.clear()
+                this.zeroPopulationInit()
+                this.lifeCycle()
+            }
+            for (i in 0..3) {
+                if (fitness_list[i] == 0.0) {
+                    best_popul = population[i]
+                }
+            }
+            return best_popul
+        }
+        return null
     }
 }

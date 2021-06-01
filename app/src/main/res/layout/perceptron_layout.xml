@@ -59,6 +59,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/cycle"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="200dp"
+        android:text="Cycle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/output"
         android:layout_width="wrap_content"
